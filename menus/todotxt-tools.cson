@@ -1,0 +1,14 @@
+'menu': [
+  {
+    'label': 'Packages'
+    'submenu': [
+      'label': 'Todo.txt'
+      'submenu': [
+        {
+          'label': 'Add TODO'
+          'command': 'todotxt:add-todo'
+        }
+      ]
+    ]
+  }
+]
