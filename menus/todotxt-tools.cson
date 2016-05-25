@@ -8,6 +8,10 @@
           'label': 'Add TODO'
           'command': 'todotxt:add-todo'
         }
+        {
+          'label': 'Finish TODO'
+          'command': 'todotxt:finish-todo'
+        }
       ]
     ]
   }
