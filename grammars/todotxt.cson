@@ -10,59 +10,40 @@
     'name': 'comment.line.todotxt'
   }
   {
-    'begin': '^(\\([A-Z]\\) )?(\\d{4}-\\d{2}-\\d{2} )?'
-    'beginCaptures':
+    'match': 't:\\d{4}-\\d{2}-\\d{2}'
+    'name': 'constant.language.todotxt.date'
+  }
+  {
+    'match': 'due:\\d{4}-\\d{2}-\\d{2}'
+    'name': 'constant.language.todotxt.due'
+  }
+  {
+    'match': 'rec:[+]?\\d+[dwmy]'
+    'name': 'constant.language.todotxt.rec'
+  }
+  {
+    'match': '[^\\s:]+:[^\\s:]+'
+    'name': 'constant.other.todotxt'
+  }
+  {
+    'match': '\\@\\S*'
+    'name': 'entity.name.type.todotxt.context'
+  }
+  {
+    'match': '\\+\\S*'
+    'name': 'entity.name.function.todotxt.project'
+  }
+  {
+    'match': '^(\\([A-Z]\\) )(\\d{4}-\\d{2}-\\d{2} )?'
+    'captures':
       '1':
         'name': 'keyword.control.todotxt.priority'
       '2':
         'name': 'entity.name.tag.todotxt.date'
-    'end': '$'
-    'name': 'meta.todotxt.todo'
-    'patterns': [
-      {
-        'include': '#metadata'
-      }
-      {
-        'include': '#lists'
-      }
-      {
-        'include': '#tags'
-      }
-    ]
+  }
+  {
+    'match': '^(\\d{4}-\\d{2}-\\d{2} )'
+    'name': 'entity.name.tag.todotxt.date'
   }
 ]
-'repository':
-  'metadata':
-    'patterns': [
-      {
-        'match': 't:\\d{4}-\\d{2}-\\d{2}'
-        'name': 'constant.language.todotxt.date'
-      }
-      {
-        'match': 'due:\\d{4}-\\d{2}-\\d{2}'
-        'name': 'constant.language.todotxt.due'
-      }
-      {
-        'match': 'rec:[+]?\\d+[dwmy]'
-        'name': 'constant.language.todotxt.rec'
-      }
-      {
-        'match': '[^\\s:]+:[^\\s:]+'
-        'name': 'constant.other.todotxt'
-      }
-    ]
-  'lists':
-    'patterns': [
-      {
-        'match': '\\@\\S*'
-        'name': 'entity.name.type.todotxt.context'
-      }
-    ]
-  'tags':
-    'patterns': [
-      {
-        'match': '\\+\\S*'
-        'name': 'entity.name.function.todotxt.project'
-      }
-    ]
 'scopeName': 'text.todotxt'
