@@ -1,0 +1,7 @@
+".platform-darwin atom-text-editor":
+  "cmd-alt-return": "todotxt:add-todo"
+  "cmd-alt-x": "todotxt:finish-todo"
+
+".platform-linux atom-text-editor, .platform-win32 atom-text-editor":
+  "ctrl-alt-return": "todotxt:add-todo"
+  "ctrl-alt-x": "todotxt:finish-todo"
