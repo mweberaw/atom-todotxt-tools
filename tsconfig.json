@@ -1,0 +1,37 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "isolatedModules": false,
+        "jsx": "react",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "declaration": false,
+        "noImplicitAny": false,
+        "noImplicitUseStrict": false,
+        "removeComments": true,
+        "noLib": false,
+        "preserveConstEnums": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "outDir": "./lib"
+    },
+    "filesGlob": [
+        "src/**/*.ts",
+        "typings/atom/atom.d.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "typings/gobals"
+    ],
+    "compileOnSave": true,
+    "buildOnSave": false,
+    "atom": {
+        "rewriteTsconfig": true
+    },
+    "files": [
+        "src/todotxt-autocompleteprovider.ts",
+        "src/todotxt-tools.ts",
+        "typings/atom/atom.d.ts"
+    ]
+}
