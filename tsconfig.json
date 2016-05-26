@@ -18,7 +18,7 @@
     },
     "filesGlob": [
         "src/**/*.ts",
-        "typings/atom/atom.d.ts"
+        "typings/index.d.ts"
     ],
     "exclude": [
         "node_modules",
@@ -32,6 +32,6 @@
     "files": [
         "src/todotxt-autocompleteprovider.ts",
         "src/todotxt-tools.ts",
-        "typings/atom/atom.d.ts"
+        "typings/index.d.ts"
     ]
 }
