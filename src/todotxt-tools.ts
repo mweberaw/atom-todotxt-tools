@@ -1,5 +1,6 @@
 import {CompositeDisposable} from 'atom';
 import path = require('path')
+import moment = require('moment')
 import {AutocompleteProvider} from './todotxt-autocompleteprovider';
 
 let provider: AutocompleteProvider = null;
@@ -26,37 +27,72 @@ export function deactivate() {
 function addTodo() {
   let editor = atom.workspace.getActiveTextEditor()
   editor.moveToBottom()
-  if (editor.getCursorBufferPosition().column !== 0) {
-    editor.insertNewline();
+  let position = editor.getCursorScreenPosition()
+  while (position.row > 0 && editor.getTextInBufferRange([[position.row-1, 0], [position.row-1, 2]]) === 'x ') {
+    editor.moveUp()
+    position = editor.getCursorBufferPosition()
   }
-  let today = new Date();
+  editor.insertNewlineAbove()
+  let today = moment()
   editor.insertText(timestamp(today) + ' ');
 }
 
 function finishTodo() {
   let editor = atom.workspace.getActiveTextEditor()
-  editor.moveToBeginningOfLine()
-  let position = editor.getCursorBufferPosition()
-  let prefix = editor.getTextInBufferRange([[position.row, 0], [position.row, 4]])
-  if (/\([A-Z]\) /.test(prefix)) {
-    editor.setSelectedBufferRange([[position.row, 0], [position.row, 4]])
-    editor.delete()
-  }
-  let today = new Date()
-  editor.insertText("x " + timestamp(today) + " ")
   editor.selectLinesContainingCursors()
-  let doneItem = editor.getSelectedText()
+  // extract and delete old item
+  let item = editor.getSelectedText()
   editor.delete()
+
+  let recMatch = /rec:([+]?)(\d+)([dwmy])/.exec(item)
+  if (recMatch !== null) {
+    // add new item with updated due-date
+    let amount = recMatch[2]
+    let kind = recMatch[3]
+    let nextDueBase = null
+
+    if (recMatch[1] === '+') {
+      let dueMatch = /due:(\d{4}-\d{2}-\d{2})/.exec(item)
+      if (dueMatch === null) {
+        atom.notifications.addError("Invalid due date for recurring item!")
+        editor.undo() // undo the delete operation
+        return;
+      }
+      nextDueBase = moment(dueMatch[1])
+
+    } else {
+      let nextDueBase = moment()
+    }
+
+    let nextDue = null
+    switch (kind) {
+      case 'd':
+      case 'w':
+      case 'y':
+        nextDue = nextDueBase.add(amount, kind)
+        break;
+      case 'm':
+        nextDue = nextDueBase.add(amount, 'M')
+    }
+    let newItem = item.replace(/\d{4}-\d{2}-\d{2}/, timestamp(moment())).replace(/due:(\d{4}-\d{2}-\d{2})/, `due:${timestamp(nextDue)}`)
+    addTodo()
+    editor.insertText(newItem)
+  }
+
+  let doneItem = item.replace(/\([A-Z]\) /, '')
   editor.moveToBottom()
   if (editor.getCursorBufferPosition().column !== 0) {
     editor.insertNewline()
   }
+  let today = moment()
+  // insert done item at the end
+  editor.insertText("x " + timestamp(today) + " ")
   editor.insertText(doneItem)
   editor.save()
 }
 
-function timestamp(date: Date) {
-  return date.toISOString().substr(0, 10);
+function timestamp(date: moment.Moment) {
+  return date.format('YYYY-MM-DD')
 }
 
 function archive() {
