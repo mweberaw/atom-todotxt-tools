@@ -21,6 +21,7 @@
     "typescript": "^1.8.10"
   },
   "dependencies": {
+    "atom-space-pen-views": "^2.2.0",
     "moment": "^2.13.0"
   }
 }

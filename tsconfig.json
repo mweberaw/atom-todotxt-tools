@@ -32,6 +32,7 @@
     "files": [
         "src/todotxt-autocompleteprovider.ts",
         "src/todotxt-tools.ts",
+        "src/views/todo-view.ts",
         "typings/index.d.ts"
     ]
 }

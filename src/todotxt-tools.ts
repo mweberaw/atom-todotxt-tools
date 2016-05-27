@@ -2,11 +2,14 @@ import {CompositeDisposable} from 'atom';
 import path = require('path')
 import moment = require('moment')
 import {AutocompleteProvider} from './todotxt-autocompleteprovider';
+import {TodoView} from './views/todo-view';
 
 let provider: AutocompleteProvider = null;
 let subscriptions: CompositeDisposable = null;
+let todoView: TodoView = null;
+let todoPanel: AtomCore.Panel = null;
 
-export function activate() {
+export function activate(state) {
   subscriptions = new CompositeDisposable();
   subscriptions.add(atom.commands.add('atom-text-editor',
     'todotxt:add-todo', ()=> addTodo()));
@@ -14,14 +17,28 @@ export function activate() {
     'todotxt:finish-todo', ()=> finishTodo()));
   subscriptions.add(atom.commands.add('atom-text-editor',
     'todotxt:archive', ()=> archive()));
+
+  // todoView = new TodoView();
+  // todoPanel = atom.workspace.addBottomPanel({
+  //   item: todoView.getElement()
+  // });
+
 }
 
 export function deactivate() {
+  if (todoPanel !== null) {
+    todoPanel.destroy();
+  }
+  todoPanel = null;
+  if (todoView !== null) {
+    todoView.destroy();
+  }
+  todoView = null;
   if (subscriptions !== null) {
     subscriptions.dispose();
   }
   subscriptions = null;
-  provider = null
+  provider = null;
 }
 
 function addTodo() {

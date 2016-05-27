@@ -1,1 +1,1 @@
-/// <reference path="atom/atom.d.ts" />
+/// <reference path="globals/atom/atom.d.ts" />
