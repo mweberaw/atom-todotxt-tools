@@ -50,18 +50,18 @@ function finishTodo() {
     let amount = recMatch[2]
     let kind = recMatch[3]
     let nextDueBase = null
+    let dueMatch = /due:(\d{4}-\d{2}-\d{2})/.exec(item)
+    if (dueMatch === null) {
+      atom.notifications.addError("Invalid due date for recurring item!")
+      editor.undo() // undo the delete operation
+      editor.moveToBeginningOfLine()
+      return;
+    }
 
     if (recMatch[1] === '+') {
-      let dueMatch = /due:(\d{4}-\d{2}-\d{2})/.exec(item)
-      if (dueMatch === null) {
-        atom.notifications.addError("Invalid due date for recurring item!")
-        editor.undo() // undo the delete operation
-        return;
-      }
       nextDueBase = moment(dueMatch[1])
-
     } else {
-      let nextDueBase = moment()
+      nextDueBase = moment()
     }
 
     let nextDue = null
@@ -74,12 +74,15 @@ function finishTodo() {
       case 'm':
         nextDue = nextDueBase.add(amount, 'M')
     }
-    let newItem = item.replace(/\d{4}-\d{2}-\d{2}/, timestamp(moment())).replace(/due:(\d{4}-\d{2}-\d{2})/, `due:${timestamp(nextDue)}`)
+    let newItem = item
+      .replace(/^\d{4}-\d{2}-\d{2} /, '')
+      .replace(/due:(\d{4}-\d{2}-\d{2})/, `due:${timestamp(nextDue)}`)
+      .replace(/[\n\r]+$/, '')
     addTodo()
     editor.insertText(newItem)
   }
 
-  let doneItem = item.replace(/\([A-Z]\) /, '')
+  let doneItem = item.replace(/^\([A-Z]\) /, '')
   editor.moveToBottom()
   if (editor.getCursorBufferPosition().column !== 0) {
     editor.insertNewline()
