@@ -133,7 +133,8 @@ module.exports =
       if @containsAllItems(line, items)
         console.log("highlighting row #{i}")
         marker = editor.markBufferPosition([i, 0])
-        editor.decorateMarker(marker, {type: 'line', class: 'activeProjectContext'})
+        editor.decorateMarker(marker, {type: 'line', class: 'activeProjectContextLine'})
+        editor.decorateMarker(marker, {type: 'line-number', class: 'activeProjectContextSide'})
 
 
   containsAllItems: (line, items) ->

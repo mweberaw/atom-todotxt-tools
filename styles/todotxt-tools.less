@@ -1,8 +1,14 @@
 @import "ui-variables";
 
+@highlight-line: @background-color-highlight;
+@highlight-side: @highlight-line + #111;
+
 atom-text-editor,
 atom-text-editor::shadow {
-  .activeProjectContext {
-    background-color: @background-color-highlight;
+  .activeProjectContextLine {
+    background-color: @highlight-line;
+  }
+  .activeProjectContextSide {
+    background-color: @highlight-side;
   }
 }
