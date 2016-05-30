@@ -16,6 +16,10 @@
           'label': 'Archive Finished'
           'command': 'todotxt:archive'
         }
+        {
+          'label': 'Select Project Context'
+          'command': 'todotxt:select-project-context'
+        }
       ]
     ]
   }

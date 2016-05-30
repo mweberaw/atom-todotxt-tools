@@ -1,6 +1,8 @@
 {CompositeDisposable} = require 'atom'
 path = require('path')
 moment = require('moment')
+{removeDuplicates, findContexts, findProjects} = require('./todotxt-utils')
+SelectProjectContextView = require('./views/select-project-context-view')
 
 module.exports =
   provider: null
@@ -14,6 +16,8 @@ module.exports =
       'todotxt:finish-todo': => @finishTodo()
     @subscriptions.add atom.commands.add 'atom-text-editor',
       'todotxt:archive': => @archive()
+    @subscriptions.add atom.commands.add 'atom-text-editor',
+      'todotxt:select-project-context': => @selectProjectContext()
 
   deactivate: ->
     @subscriptions?.dispose()
@@ -107,6 +111,33 @@ module.exports =
         doneEditor.save()
         atom.workspace.open(todoPath)
       )
+
+  selectProjectContext: () ->
+    editor = atom.workspace.getActiveTextEditor()
+    content = editor.getText()
+    projects = removeDuplicates(findProjects(content))
+                    .map((proj) -> {name: proj[1..], type: proj[0], raw: proj})
+    contexts = removeDuplicates(findContexts(content))
+                    .map((ctxt) -> {name: ctxt[1..], type: ctxt[0], raw: ctxt})
+    selectView = new SelectProjectContextView(projects, contexts, (items) =>
+      @highlightLines(items))
+
+  highlightLines: (items) ->
+    console.log('Selected items: ')
+    console.log(items)
+    editor = atom.workspace.getActiveTextEditor()
+    # remove the old markers
+    editor.getDefaultMarkerLayer().getMarkers().map((m) -> m.destroy())
+    for i in [0..editor.getLineCount()-1]
+      line = editor.lineTextForBufferRow(i)
+      if @containsAllItems(line, items)
+        console.log("highlighting row #{i}")
+        marker = editor.markBufferPosition([i, 0])
+        editor.decorateMarker(marker, {type: 'line', class: 'activeProjectContext'})
+
+
+  containsAllItems: (line, items) ->
+    items.reduce(((des, it) -> des and (line.indexOf(it.raw) > 0)), true)
 
   provideAutocomplete: ->
     unless @provider?
