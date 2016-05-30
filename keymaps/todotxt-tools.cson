@@ -1,7 +1,7 @@
-".platform-darwin atom-text-editor":
-  "cmd-alt-return": "todotxt:add-todo"
+'.platform-darwin atom-text-editor[data-grammar="text todotxt"]:not([mini])':
+  "cmd-alt-n": "todotxt:add-todo"
   "cmd-alt-x": "todotxt:finish-todo"
 
-".platform-linux atom-text-editor, .platform-win32 atom-text-editor":
-  "ctrl-alt-return": "todotxt:add-todo"
+'.platform-linux atom-text-editor, .platform-win32 atom-text-editor[data-grammar="text todotxt"]:not([mini])':
+  "ctrl-alt-n": "todotxt:add-todo"
   "ctrl-alt-x": "todotxt:finish-todo"
