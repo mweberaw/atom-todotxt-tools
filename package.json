@@ -3,10 +3,8 @@
   "main": "./lib/todotxt-tools",
   "version": "0.0.0",
   "description": "Support for viewing and editing Todo.txt files",
-  "keywords": [
-  ],
-  "activationCommands": {
-  },
+  "keywords": [],
+  "activationCommands": {},
   "repository": "https://github.com/mweberaw/atom-todotxt-tools",
   "license": "MIT",
   "engines": {
@@ -20,5 +18,9 @@
     }
   },
   "dependencies": {
+    "moment": "^2.13.0"
+  },
+  "devDependencies": {
+    "coffeelint": "^1.15.7"
   }
 }
